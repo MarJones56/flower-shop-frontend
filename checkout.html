@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="checkout.css">
+    <title>Checkout</title>
+</head>
+<body>
+
+    <ul class="topnav">
+        <li><a class="active" href="index.html"><img src="Logos\FPLOGO.png"></a></li>
+        <li class="rightimg"><a id="basketNav"><img src="Logos\basket0.png"></a></li>
+        <li class="rightimg"><a href="login.html"><img src="Logos\user.png"></a></li>
+        <li class="right"><a  href="help.html">Help</a></li>
+        <li class="right"><a href="login.html">Track Order</a></li>
+      </ul>
+
+      <div class="container">
+        
+        <div class="progress-container">
+            <div class="progress-tracker">
+                <div class="step completed">
+                    <div class="inner-circle"></div>
+                    Review
+                </div>
+                <div class="line"></div>
+                <div class="step completed">
+                    <div class="inner-circle"></div>
+                    Delivery
+                </div>
+                <div class="line"></div>
+                <div class="step">
+                    <div class="inner-circle"></div>
+                    Done
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout-info">
+            <div class="flower-photo"><img src="" id="flowerImg"></div>
+            <div class="checkout-input">
+                <h1 id="flowerName"></h1>
+
+                <div class="divider"></div>
+
+                <h2>Delivery Date</h2>
+                <p id="deliveryDate"></p>
+
+                <div class="divider"></div>
+
+                <h2>Item Pricing</h2>
+                <p id="itemPricing">$74.00</p>
+
+                <div class="divider"></div>
+
+                <h2>Delivery Address</h2>
+                <p id="name"></p>
+                <p id="address"></p>
+                <p id="cityState"></p>
+
+                <div class="checkout-pricing">
+                    <div class="saving-info" id="saving"></div>
+                    
+                    <div class="pricing-container">
+                        <div class="pricing-labels">
+                            <h1 class="subtotal">Subtotal:</h1>
+                            <h2 class="regular">Delivery:</h2>
+                            <h2 class="discount">Delivery Discount</h2>
+                            <h2 class="regular">Tax:</h2>
+                            <h1 class="order-total">Order Total:</h1>
+                        </div>
+                        <div class="pricing-prices">
+                            <h1 class="subtotal" id="subtotal"></h1>
+                            <h2 class="regular" id="delivery"></h2>
+                            <h2 class="discount" id="discount">-$10.00</h2>
+                            <h2 class="regular">$0.00</h2>
+                            <h1 class="order-total" id="orderTotal">$89.00</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <p>By Clicking "Place Order" you agree to the <span>Terms of Use</span> and <span>Privacy Policy</span>.</p>
+                    <button onclick="placeOrder()">Place Order</button>
+                </div>
+                
+            </div>
+        </div>
+
+      </div>
+
+      <script src="configuration.js"></script>
+      <script src="basket.js"></script>
+
+      <script>
+        let flower = JSON.parse(localStorage.getItem("currentFlower"));
+        let order = JSON.parse(localStorage.getItem("order"));
+        console.log(order);
+        let basket = JSON.parse(localStorage.getItem("basket"));
+        let cityState = order.city + ", " + order.state + " " + order.zipcode;
+        let loggedIn = isLoggedIn();
+        let deliveryCost = basket[2] ? 0.00 : 25.00;
+        let discount = loggedIn ? 10.00 : 0.00;
+        let total = order.price + deliveryCost - discount;
+        let savingMessage = loggedIn ? `You are saving <span>$10.00</span> on this order!` : `Login and save <span>$10.00</span> on this order!`;
+
+        document.getElementById("itemPricing").innerText = "$" + order.price.toFixed(2);
+        document.getElementById("name").innerText = order.name;
+        document.getElementById("address").innerText = order.address;
+        document.getElementById("cityState").innerText = cityState;
+        document.getElementById("flowerName").innerText = flower.name;
+        document.getElementById("deliveryDate").innerText = order.date;
+        document.getElementById("subtotal").innerText = "$" + order.price.toFixed(2);
+        document.getElementById("delivery").innerText = "$" + deliveryCost.toFixed(2);
+        document.getElementById("discount").innerText = "-$" + discount.toFixed(2);
+        document.getElementById("orderTotal").innerText = "$" + total.toFixed(2);
+        document.getElementById("saving").innerHTML = savingMessage;
+
+
+        let flowerImg = document.getElementById("flowerImg");
+        flowerImg.src = flower.picture;
+
+        async function placeOrder() {
+            order.price = total;
+
+            let request = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(order)
+            };
+
+            try {
+                let response = await fetch(getHost() + "/orders", request);
+                if (response.status == 200) {
+                    alert("Order placed!");
+                    localStorage.removeItem("basket");
+                    localStorage.removeItem("order");
+                    localStorage.removeItem("currentFlower"); 
+                    location.href = "index.html";
+                } else {
+                    console.log(`response status:${response.status}`);
+                    removeTheToken();
+                    alert("Something went wrong");
+                }
+            } catch (error) {
+                console.log(error);
+                removeTheToken();
+                alert("Something went wrong");
+            }
+            
+        }
+      </script>
+    
+</body>
+</html>

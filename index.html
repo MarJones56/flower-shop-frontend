@@ -1,0 +1,153 @@
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="cards.css">
+    <title>Home</title>
+</head>
+<body>
+
+    <ul class="topnav">
+        <li><a class="active" href="index.html"><img src="Logos\FPLOGO.png"></a></li>
+        <li class="rightimg"><a id="basketNav"><img src="Logos\basket0.png"></a></li>
+        <li class="rightimg"><a href="login.html"><img src="Logos\user.png"></a></li>
+        <li class="right"><a  href="help.html">Help</a></li>
+        <li class="right"><a href="login.html">Track Order</a></li>
+      </ul>
+
+        <div class="infoFlex">
+          <div class="introFlex">
+            <div class="introContent">
+                <h1>Send Her Blooms</h1>
+                <div class="divider"></div>
+                <p>Shop All Mother's Day Flowers!</p>
+            </div>
+          </div>
+          <div class="imageFlex"><img src="Flowers\pinkroses.jpg"></div>
+        </div>
+
+        <div class="filterSortContainer">
+            <div class="filterContainer">
+                <div class="filterText">FILTER BY</div>
+                <select id="Flower Type" onchange="changeFilters()">
+                    <option value="" disabled selected>Flower Type</option>
+                    <option value="mixed">Mixed</option>
+                    <option value="Roses">Roses</option>
+                    <option value="lilies">Lilies</option>
+                    <option value="tulips">Tulips</option>
+                    <option value="daisies">Daisies</option>
+                </select>
+                <select id="Occasion" onchange="changeFilters()">
+                    <option value="" disabled selected>Occasion</option>
+                    <option value="motherday">Mother's Day</option>
+                    <option value="birthday">Birthday</option>
+                    <option value="thankyou">Thank You</option>
+                </select>
+                <select id="Color" onchange="changeFilters()">
+                    <option value="" disabled selected>Color</option>
+                    <option value="mixed">Mixed</option>
+                    <option value="red">Red</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="green">Green</option>
+                    <option value="orange">Orange</option>
+                </select>
+            </div>
+            <div class="sortContainer">
+                <div class="sortText">SORT</div>
+                <select id="Sort" onchange="changeFilters()">
+                    <option value="l2h">Price: Low To High</option>
+                    <option value="h2l">Price: High To Low</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="list" class="cards"></div>
+        
+
+        <script src="configuration.js"></script>
+        <script src="basket.js"></script>
+        <script>
+
+            let flowers = [];
+            let filteredFlowers = [];
+            //displayFlowers();
+            changeFilters();
+
+            async function getAll() {
+                let response = await fetch(getHost() + "/flowers");
+                let result = await response.json();
+                return result;
+            }
+
+            async function displayFlowers() {
+                if (flowers.length == 0) {
+                    flowers = await getAll();
+                }
+
+                let list = document.getElementById("list");
+                list.innerHTML = "";
+
+                for (let flower of filteredFlowers) {
+                    let div = document.createElement("div");
+                    div.className = "card";
+                    div.onclick = function() {
+                        viewAddBasket(flower)
+                    };
+                    let innerHTML = `
+                    <img src=${flower.picture}>
+                    <div class="container">
+                        <h4>${flower.name}</h4>
+                        <p>from <b>$${flower.price.toFixed(2)}</b></p>
+                    </div>`;
+                    div.innerHTML = innerHTML;
+                    list.appendChild(div);
+                }
+            }
+
+            function viewAddBasket(flower) {
+                localStorage.setItem("currentFlower", JSON.stringify(flower));
+                window.location.href = "addtobasket.html";
+            }
+
+            async function changeFilters() {
+
+                if (flowers.length == 0) {
+                    flowers = await getAll();
+                }
+
+
+                let type = document.getElementById("Flower Type").value;
+                let occasion = document.getElementById("Occasion").value;
+                let color = document.getElementById("Color").value;
+                let sort = document.getElementById("Sort").value;
+
+                filteredFlowers = flowers.slice();
+
+                if (type != "") {
+                    filteredFlowers = filteredFlowers.filter(flower => flower.type == type);
+                }
+
+                if (occasion != "") {
+                    filteredFlowers = filteredFlowers.filter(flower => flower.occasion == occasion);
+                }
+
+                if (color != "") {
+                    filteredFlowers = filteredFlowers.filter(flower => flower.color == color);
+                }
+
+                if (sort == "l2h") {
+                    filteredFlowers = filteredFlowers.slice().sort((a, b) => a.price - b.price);
+                } else if (sort == "h2l") {
+                    filteredFlowers = filteredFlowers.slice().sort((a, b) => b.price - a.price);
+                }
+
+                displayFlowers();
+            }
+
+        </script>
+    
+</body>
+</html>

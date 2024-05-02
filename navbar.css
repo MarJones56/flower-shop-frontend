@@ -1,0 +1,84 @@
+ul.topnav {
+    list-style-type: none;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 0;
+    overflow: hidden;
+    border-top: 2px solid rgb(158, 0, 158);
+    padding-right: 50px;
+    padding-left: 50px;
+    position: relative;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+ul.topnav li {
+    padding-top: 30px;
+    float: left;
+    position: relative; 
+}
+
+ul.topnav li a {
+    display: block;
+    color: rgb(58, 58, 58);
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    position: relative;
+}
+
+ul.topnav li::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: rgb(158, 0, 158);
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+ul.topnav li:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+ul.topnav li a img {
+    height: 150px;
+    width: 150px;
+    padding: 14px 16px;
+}
+
+ul.topnav li.right img {
+    height: 35px;
+    width: 35px;
+    padding: 4px 10px;
+}
+
+ul.topnav li.right a {
+    padding: 14px 16px;
+}
+
+ul.topnav li.rightimg a img{
+    height: 35px;
+    width: 35px;
+    padding: 4px 10px;
+}
+
+ul.topnav li.rightimg img{
+    height: 35px;
+    width: 35px;
+    padding: 4px 10px;
+}
+
+ul.topnav li a:hover:not(.active) {background-color: #ffa0d446;}
+
+ul.topnav li.right a.active {background-color: #fcdda3}
+
+ul.topnav li.right {float: right;}
+
+ul.topnav li.rightimg {float: right;}
+
+@media screen and (max-width: 600px) {
+    ul.topnav li.right, 
+    ul.topnav li {float: none;}
+}

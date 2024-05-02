@@ -1,0 +1,11 @@
+.container {
+    width: 800px;
+    margin-top: 0;
+    margin: 100px auto;
+}
+
+.divider {
+    border-bottom: 2px solid #cfcdcd; 
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="delivery.css">
+    <title>Delivery</title>
+</head>
+<body>
+
+    <ul class="topnav">
+        <li><a class="active" href="index.html"><img src="Logos\FPLOGO.png"></a></li>
+        <li class="rightimg"><a id="basketNav"><img src="Logos\basket0.png"></a></li>
+        <li class="rightimg"><a href="login.html"><img src="Logos\user.png"></a></li>
+        <li class="right"><a  href="help.html">Help</a></li>
+        <li class="right"><a href="login.html">Track Order</a></li>
+      </ul>
+
+      <div class="container">
+
+        <div class="progress-container">
+            <div class="progress-tracker">
+                <div class="step completed">
+                    <div class="inner-circle"></div>
+                    Review
+                </div>
+                <div class="line"></div>
+                <div class="step">
+                    <div class="inner-circle"></div>
+                    Delivery
+                </div>
+                <div class="line"></div>
+                <div class="step">
+                    <div class="inner-circle"></div>
+                    Done
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="flower-info">
+            <div class="flower-name" id="flowerName"></div><div class="flower-price" id="flowerPrice"></div>
+        </div>
+        <div class="divider"></div>
+
+        <div class="delivery-info">
+            <div class="flower-photo">
+                <img src="" id="flowerImg">
+                <h1>Delivery Date</h1>
+                <h2 id="deliveryDate"></h2>
+            </div>
+
+            <div class="delivery-input">
+                <h1>Recipient</h1>
+                <div class="grid-container">
+                    <div class="text">First Name*</div>
+                    <div class="text">Last Name*</div>
+                    <input type="text" class="textbox" placeholder="First Name" id="fname">
+                    <input type="text" class="textbox" placeholder="First Name" id="lname">
+                </div>
+                <div class="relationship-container">
+                    <div class="text">Relationship*</div>
+                    <select id="Relationship">
+                        <option value="" disabled selected>Relationship</option>
+                        <option value="wife">Wife</option>
+                        <option value="husband">Husband</option>
+                        <option value="mother">Mother</option>
+                        <option value="father">Father</option>
+                        <option value="friend">Friend</option>
+                    </select>
+                </div>
+                <h1>Deliver To</h1>
+                <div address-container>
+                    <div class="text">Address*</div><br>
+                    <input type="text" class="textbox" placeholder="Address" id="address">
+                    <div class="right">We Cannot Ship to PO Boxes</div>
+                </div>
+
+                <div class="grid-container">
+                    <div class="text">Apt/Suite</div>
+                    <div class="text">City*</div>
+                    <input type="text" class="textbox" placeholder="Apt/Suite" id="apt">
+                    <input type="text" class="textbox" placeholder="City" id="city">
+                    <div class="text">State*</div>
+                    <div class="text">Zip Code*</div>
+
+                    <select id="State">
+                        <option value="" disabled selected>State</option>
+                        <option value="Alabama">Alabama</option>
+                        <option value="Alaska">Alaska</option>
+                        <option value="Arizona">Arizona</option>
+                        <option value="Arkansas">Arkansas</option>
+                        <option value="California">California</option>
+                        <option value="Colorado">Colorado</option>
+                        <option value="Connecticut">Connecticut</option>
+                        <option value="Delaware">Delaware</option>
+                        <option value="Florida">Florida</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Hawaii">Hawaii</option>
+                        <option value="Idaho">Idaho</option>
+                        <option value="Illinois">Illinois</option>
+                        <option value="Indiana">Indiana</option>
+                        <option value="Iowa">Iowa</option>
+                        <option value="Kansas">Kansas</option>
+                        <option value="Kentucky">Kentucky</option>
+                        <option value="Louisiana">Louisiana</option>
+                        <option value="Louisiana">Louisiana</option>
+                        <option value="Maryland">Maryland</option>
+                        <option value="Massachusetts">Massachusetts</option>
+                        <option value="Michigan">Michigan</option>
+                        <option value="Minnesota">Minnesota</option>
+                        <option value="Mississippi">Mississippi</option>
+                        <option value="Missouri">Missouri</option>
+                        <option value="Montana">Montana</option>
+                        <option value="Nebraska">Nebraska</option>
+                        <option value="Nevada">Nevada</option>
+                        <option value="New Hampshire">New Hampshire</option>
+                        <option value="New Jersey">New Jersey</option>
+                        <option value="New Mexico">New Mexico</option>
+                        <option value="New York">New York</option>
+                        <option value="North Carolina">North Carolina</option>
+                        <option value="North Dakota">North Dakota</option>
+                        <option value="Ohio">Ohio</option>
+                        <option value="Oklahoma">Oklahoma</option>
+                        <option value="Oregon">Oregon</option>
+                        <option value="Pennsylvania">Pennsylvania</option>
+                        <option value="Rhode Island">Rhode Island</option>
+                        <option value="South Carolina">South Carolina</option>
+                        <option value="South Dakota">South Dakota</option>
+                        <option value="Tennessee">Tennessee</option>
+                        <option value="Texas">Texas</option>
+                        <option value="Utah">Utah</option>
+                        <option value="Vermont">Vermont</option>
+                        <option value="Virginia">Virginia</option>
+                        <option value="Washington">Washington</option>
+                        <option value="West Virginia">West Virginia</option>
+                        <option value="Wisconsin">Wisconsin</option>
+                        <option value="Wyoming">Wyoming</option>
+                    </select>
+
+                    <input type="text" class="textbox" placeholder="Zip Code" id="zip">
+                </div>
+
+                <div class="divider"></div>
+                <div class="continue-container">
+                    <button onclick="toCheckout()">Continue</button>
+                    <div class="text">Taxes and Delivery Calculated Later</div>
+                </div>
+            </div>
+        </div>
+      </div>
+      
+      <script src="configuration.js"></script>
+      <script src="basket.js"></script>
+
+      <script>
+
+        let flower = JSON.parse(localStorage.getItem("currentFlower"));
+        let basketJSON = localStorage.getItem("basket");
+        let basket = JSON.parse(basketJSON);
+        let flowerImg = document.getElementById("flowerImg");
+        let deliveryDate = document.getElementById("deliveryDate");
+        let dateJSON = new Date(basket[0]);
+        let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        let date = months[dateJSON.getMonth()] + " " + dateJSON.getDate() + ", " + dateJSON.getFullYear();
+        deliveryDate.innerText = date;
+        flowerImg.src = flower.picture;
+        document.getElementById("flowerName").innerText = flower.name;
+        document.getElementById("flowerPrice").innerText = "$" + basket[1].toFixed(2); 
+
+        function toCheckout() {
+            let fname = document.getElementById("fname");
+            let lname = document.getElementById("lname");
+            let address = document.getElementById("address");
+            let apt = document.getElementById("apt");
+            let city = document.getElementById("city");
+            let state = document.getElementById("State");
+            let zipcode = document.getElementById("zip");
+
+            if (fname.value == "" || lname.value == "" || address.value == "" || city.value == "" || state.value == "" || zipcode.value == "") {
+                alert("Please enter all fields.");
+            }
+            
+            
+            let name = fname.value + " " + lname.value;
+            let realAddress = address.value;
+            if (apt.value != "") {
+                realAddress += " " + apt.valu
+                e;
+            }
+
+            let id = Math.floor(Math.random() * (1000000 - 0)) + 0;
+            let email = isLoggedIn() ? localStorage.getItem("email") : "none";
+
+            let order = {
+                id: id,
+                email: email,
+                name: name,
+                address: realAddress,
+                city: city.value,
+                state: state.value,
+                zipcode: zipcode.value,
+                flower: flower.name,
+                date: date,
+                price: basket[1]
+            };
+
+            localStorage.setItem("order", JSON.stringify(order));
+            location.href = "checkout.html";
+
+        }
+
+      </script>
+    
+</body>
+</html>

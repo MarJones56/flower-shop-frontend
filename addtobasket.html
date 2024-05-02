@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="addtobasket.css">
+    <title>Add To Basket</title>
+</head>
+<body>
+
+    <ul class="topnav">
+        <li><a class="active" href="index.html"><img src="Logos\FPLOGO.png"></a></li>
+        <li class="rightimg"><a id="basketNav"><img src="Logos\basket0.png"></a></li>
+        <li class="rightimg"><a href="login.html"><img src="Logos\user.png"></a></li>
+        <li class="right"><a  href="help.html">Help</a></li>
+        <li class="right"><a href="login.html">Track Order</a></li>
+      </ul>
+
+      <div class="container">
+        <div class="imageFlex">
+            <img src="Flowers\pinkroses.jpg">
+        </div>
+        <div class="checkoutFlex">
+            <h1 id="flowerName"></h1><br>
+            <h2>DELIVERY DATE*</h2><br>
+            <div class="date-selector">
+                <input type="date" id="date" name="date" placeholder="Select a Date">
+            </div>
+            <div class="purchaseOptions">
+                <h2>PURCHASING OPTIONS</h2><br>
+                
+                <div class="purchase-options">
+                    <div class="radio-container-gray">
+                        <input type="radio" id="option1" name="radio" value="option1">
+                        <label for="option1" id="subPrice"></label>
+                        <div class="divider"></div>
+                        <div class="radio-container-info">
+                        <b>Best Value:</b> Up to 30% off + free shippng on subscription deliveries.</p><br>
+                        <b>Flexible:</b> Pick your flowers, date, & recipient every month, or set it & forget</p><br>
+                        <b>No Obligations:</b> Skip as often as you'd like. Cancel anytime.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="radio-container">
+                        <input type="radio" id="option2" name="radio" value="option2">
+                        <label for="option2" id="oneTimePrice"></label>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="addToBasket()">ADD TO BASKET</button>
+
+        </div>
+
+        
+    </div>
+
+    <script src="configuration.js"></script>
+    <script src="basket.js"></script>
+    <script>
+
+        let flower = JSON.parse(localStorage.getItem("currentFlower"));
+        document.getElementById("flowerName").innerText = flower.name;
+        document.getElementById("oneTimePrice").innerHTML = `One Time Purchase:<b>$${flower.price.toFixed(2)}</b>`;
+        let subPrice = flower.price * 0.7;
+        document.getElementById("subPrice").innerHTML = `Start a Subscription:<b>$${subPrice.toFixed(2)} + free shipping</b>`
+
+        function addToBasket() {
+            let date = document.getElementById("date").value;
+            let option1 = document.getElementById("option1").checked;
+            let option2 = document.getElementById("option2").checked;
+
+            if (date === "") {
+                alert("Please select a delivery date.");
+                return;
+            }
+
+            if (!option1 && !option2) {
+                alert("Please select a purchasing option.");
+                return;
+            }
+
+            let selectedDate = new Date(date);
+            let currentDate = new Date();
+
+            if (selectedDate < currentDate) {
+                alert("Please select a future delivery date.");
+                return;
+            }
+
+            let basket = [];
+            basket.push(date);
+            basket.push(option1 ? subPrice : flower.price);
+            basket.push(option1);
+            localStorage.setItem("basket", JSON.stringify(basket));
+            location.href = "delivery.html";
+        }
+        
+    </script>
+    
+</body>
+</html>

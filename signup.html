@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="login.css">
+    <title>Sign Up</title>
+</head>
+<body>
+
+    <ul class="topnav">
+        <li><a class="active" href="index.html"><img src="Logos\FPLOGO.png"></a></li>
+        <li class="rightimg"><a id="basketNav"><img src="Logos\basket0.png"></a></li>
+        <li class="rightimg"><a href="login.html"><img src="Logos\user.png"></a></li>
+        <li class="right"><a>Help</a></li>
+        <li class="right"><a href="trackorder.html">Track Order</a></li>
+      </ul>
+
+      <div class="container">
+        <button class="active">Sign Up</button><button onclick="goToLogin()">Login</button>
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" placeholder="Enter your email">
+    
+            <label for="password">Password</label>
+            <div style="position: relative;">
+                <input type="password" id="password" name="password" placeholder="Enter your password">
+                <div class="show-password-container" onclick="showPassword()">Show Password</div>
+            </div>
+    
+            <button class="submit" onclick="signup()">Sign Up</button>
+    </div>
+
+    <script src="configuration.js"></script>
+    <script src="register.js"></script>
+    <script src="basket.js"></script>
+    <script>
+        
+        function goToLogin() {
+            window.location.href = "login.html";
+        }
+
+        function showPassword() {
+            var passwordInput = document.getElementById('password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        };
+    </script>
+    
+</body>
+</html>
